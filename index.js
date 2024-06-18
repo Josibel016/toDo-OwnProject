@@ -2,13 +2,14 @@ const textArea= document.getElementById("new-task")
 const todoContainer = document.querySelector(".todo-container");
 const btnAddTask = document.getElementById("add-task-btn");
 
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 btnAddTask.addEventListener('click', function(evento){
-    evento.preventDefault;
+    evento.preventDefault();
     novaTarefa()
     textArea.value="";
     salvarTask();
+    console.log(tasks)
 })
 
 function novaTarefa (){
@@ -21,5 +22,10 @@ function novaTarefa (){
 }
 
 function salvarTask(){
-    localStorage.setItem('tasks to do:',JSON.stringify(tasks))
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function mostrarTasksNaTela(){
+   
+
 }
