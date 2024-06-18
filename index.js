@@ -8,7 +8,7 @@ btnAddTask.addEventListener('click', function(evento){
     evento.preventDefault;
     novaTarefa()
     textArea.value="";
-console.log(tasks);
+    salvarTask();
 })
 
 function novaTarefa (){
@@ -18,4 +18,8 @@ function novaTarefa (){
         descricao: NewTask
     }
     tasks.push(adcNovaTarefa)
+}
+
+function salvarTask(){
+    localStorage.setItem('tasks to do:',JSON.stringify(tasks))
 }
