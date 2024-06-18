@@ -5,12 +5,12 @@ const ulTarefas = document.getElementById('task-list')
 const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
 btnAddTask.addEventListener('click', function(event){
-    event.preventDefault();
+    event.preventDefault(); 
     novaTarefa()
     textArea.value="";
     salvarTask();
     mostrarTasksNaTela();
-    console.log(tasks)
+    console.log(tasks);
 
 })
 
@@ -36,11 +36,25 @@ function mostrarTasksNaTela(){
    })
 
 }
- function criarElementoTarefa(tarefa){
-    const li = document.createElement('li')
+
+function criarElementoTarefa(tarefa) {
+    const li = document.createElement('li');
     li.classList.add('task-item');
     li.textContent = tarefa.descricao;
-    ulTarefas.appendChild(li);
 
+    // Create and append the delete button to each task
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.addEventListener('click', () => {
+        const index = tasks.indexOf(tarefa);
+        if (index > -1) {
+            tasks.splice(index, 1); // Remove the task from the array
+            salvarTask(); // Update local storage
+            mostrarTasksNaTela(); // Refresh the task list
+        }
+    });
 
- }
+    li.appendChild(deleteBtn); // Append the delete button to the task item
+    ulTarefas.appendChild(li); // Append the task item to the task list
+}
