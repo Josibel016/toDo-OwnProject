@@ -42,8 +42,27 @@ function criarElementoTarefa(tarefa) {
     li.classList.add('task-item');
     li.textContent = tarefa.descricao;
 
-    // Create and append the delete button to each task
-    const deleteBtn = document.createElement('button');
+    const Editbtn = document.createElement('button')
+    Editbtn.classList.add ('app_button-edit')
+
+    Editbtn.onclick = ()=>{
+        const novaDescricao = prompt('enter your new task')
+        li.textContent = novaDescricao
+        tarefa.descricao=novaDescricao;
+        salvarTask()
+        mostrarTasksNaTela()
+    }
+    const imagemBotao=document.createElement('img')
+    imagemBotao.setAttribute('src', './imagens/edit.png');
+    
+    Editbtn.append(imagemBotao)
+   
+    
+    
+ // Create and append the delete button to each task
+
+ const deleteBtn = document.createElement('button');
+
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
     deleteBtn.addEventListener('click', () => {
@@ -56,5 +75,8 @@ function criarElementoTarefa(tarefa) {
     });
 
     li.appendChild(deleteBtn); // Append the delete button to the task item
+    li.appendChild(Editbtn);
     ulTarefas.appendChild(li); // Append the task item to the task list
 }
+
+mostrarTasksNaTela()
