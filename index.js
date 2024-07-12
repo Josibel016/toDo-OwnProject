@@ -1,40 +1,42 @@
-const textArea= document.getElementById("new-task")
+const textArea = document.getElementById("new-task");
 const todoContainer = document.querySelector(".todo-container");
 const btnAddTask = document.getElementById("add-task-btn");
-const ulTarefas = document.getElementById('task-list')
-const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+const ulTarefas = document.getElementById('task-list');
+const taskInProcess = document.getElementById('taskInProcess');
 
-btnAddTask.addEventListener('click', function(event){
-    event.preventDefault(); 
-    novaTarefa()
-    textArea.value="";
+
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let tarefaSelecionada = null;
+
+btnAddTask.addEventListener('click', function(event) {
+    event.preventDefault();
+    novaTarefa();
+    textArea.value = "";
     salvarTask();
     mostrarTasksNaTela();
-    console.log(tasks);
+});
 
-})
+function novaTarefa() {
+    const newTask = textArea.value.trim();
 
-function novaTarefa (){
-    const NewTask = textArea.value.trim();
-
-    if (NewTask !== ""){
-
-    const adcNovaTarefa = {
-        descricao: NewTask
+    if (newTask !== "") {
+        const novaTarefa = {
+            descricao: newTask
+        };
+        tasks.push(novaTarefa);
     }
-    tasks.push(adcNovaTarefa)
-}}
+}
 
-function salvarTask(){
+function salvarTask() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-function mostrarTasksNaTela(){
-   ulTarefas.innerHTML='';
-   tasks.forEach (tasks =>{
-    criarElementoTarefa(tasks);
-   })
-
+function mostrarTasksNaTela() {
+    debugger
+    ulTarefas.innerHTML = '';
+    tasks.forEach(tarefa => {
+        criarElementoTarefa(tarefa);
+    });
 }
 
 function criarElementoTarefa(tarefa) {
@@ -42,41 +44,61 @@ function criarElementoTarefa(tarefa) {
     li.classList.add('task-item');
     li.textContent = tarefa.descricao;
 
-    const Editbtn = document.createElement('button')
-    Editbtn.classList.add ('app_button-edit')
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.classList.add('buttons');
 
-    Editbtn.onclick = ()=>{
-        const novaDescricao = prompt('enter your new task')
-        li.textContent = novaDescricao
-        tarefa.descricao=novaDescricao;
-        salvarTask()
-        mostrarTasksNaTela()
-    }
-    const imagemBotao=document.createElement('img')
-    imagemBotao.setAttribute('src', './imagens/edit.png');
-    
-    Editbtn.append(imagemBotao)
-   
-    
-    
- // Create and append the delete button to each task
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.classList.add('edit-btn');
+    editBtn.addEventListener('click', () => {
+        const novaDescricao = prompt('Enter your new task');
+        if (novaDescricao !== null) {
+            tarefa.descricao = novaDescricao;
+            salvarTask();
+            mostrarTasksNaTela();
+        }
+    });
 
- const deleteBtn = document.createElement('button');
-
+    const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.classList.add('delete-btn');
     deleteBtn.addEventListener('click', () => {
         const index = tasks.indexOf(tarefa);
         if (index > -1) {
-            tasks.splice(index, 1); // Remove the task from the array
-            salvarTask(); // Update local storage
-            mostrarTasksNaTela(); // Refresh the task list
+            tasks.splice(index, 1);
+            salvarTask();
+            mostrarTasksNaTela();
         }
     });
 
-    li.appendChild(deleteBtn); // Append the delete button to the task item
-    li.appendChild(Editbtn);
-    ulTarefas.appendChild(li); // Append the task item to the task list
+    buttonsContainer.appendChild(editBtn);
+    buttonsContainer.appendChild(deleteBtn);
+
+    li.appendChild(buttonsContainer);
+    ulTarefas.appendChild(li);
+
+    li.onclick = () => {
+        taskInProcess.textContent = tarefa.descricao;
+       document.querySelectorAll('.task-item-active')
+       .forEach(elemento => {
+        elemento.classList.remove('task-item-active');
+       })
+
+       if (tarefaSelecionada==tarefa){
+        taskInProcess.textContent='';
+        tarefaSelecionada=null
+        return
+       }
+
+        li.classList.add('task-item-active');
+       
+
+        tarefaSelecionada=tarefa;
+
+
+    }
+    return li
 }
 
-mostrarTasksNaTela()
+
+mostrarTasksNaTela();

@@ -22,22 +22,26 @@ body {
     background-color: #9CAFAA;
 }
 
-#new-task{
+#new-task {
     font-size: 30px;
+    margin-bottom: 10px; /* Espaçamento abaixo do campo de entrada */
 }
 
 #task-list {
     list-style-type: none;
     padding: 0;
-    font-size: 30px;
-
 }
 
 .task-item {
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Alinha itens verticalmente no centro */
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+.task-item-active{
+        border: 2px solid #FFF;
 }
 
 .task-item.completed {
@@ -45,12 +49,17 @@ body {
     color: gray;
 }
 
-.botoes{
+.buttons {
     display: flex;
-    justify-content: end;
+    gap: 10px; /* Espaço entre os botões */
+}
+
+.buttons button {
+    font-size: 16px; /* Tamanho da fonte dos botões */
 }
 
 h1 {
     font-size: 50px;
     text-align: center; /* Centraliza o texto do título */
 }
+
